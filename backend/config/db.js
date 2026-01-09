@@ -1,22 +1,36 @@
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
+// import { Pool } from 'pg';
+// import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
+
+// const pool = new Pool({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DB_NAME,
+//   password: process.env.DB_PASSWORD,
+//   port: process.env.DB_PORT,
+// });
+
+// pool.on('connect', () => {
+//   console.log('Connected to the database');
+// });
+
+// pool.on('error', (err) => {
+//   console.error('Database Error', err);
+// });
+
+// export default pool;
+
+// config/db.js or wherever you configure PostgreSQL
+import pg from 'pg';
+const { Pool } = pg;
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
-
-pool.on('connect', () => {
-  console.log('Connected to the database');
-});
-
-pool.on('error', (err) => {
-  console.error('Database Error', err);
+  connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? { rejectUnauthorized: false }
+      : false,
 });
 
 export default pool;
